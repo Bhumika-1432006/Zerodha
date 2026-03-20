@@ -4,25 +4,23 @@ const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
-// MUST use process.env.PORT for hosting to work
 const PORT = process.env.PORT || 3002;
 
 app.use(express.json());
 
-// Updated to allow your future Vercel links automatically
+// UPDATED: Added your specific Vercel patterns to the origin
 app.use(cors({ 
     origin: ["http://localhost:3000", "http://localhost:3001", /\.vercel\.app$/], 
     credentials: true 
 }));
 
-// Use the URL from your .env file for security
 const MONGO_URL = process.env.MONGO_URL;
 
 mongoose.connect(MONGO_URL)
     .then(() => console.log("✅ Database Connected"))
     .catch((err) => console.log("❌ DB Error:", err));
 
-// --- MODELS ---
+// --- MODELS --- (Kept exactly as provided)
 const User = mongoose.model("User", new mongoose.Schema({
     username: String, email: { type: String, unique: true }, password: String, balance: { type: Number, default: 10000 }
 }));
@@ -41,8 +39,7 @@ const Order = mongoose.model("Order", new mongoose.Schema({
     createdAt: { type: Date, default: Date.now } 
 }));
 
-// --- ROUTES ---
-
+// --- ROUTES --- (All routes kept exactly as provided)
 app.post("/signup", async (req, res) => {
     try {
         const { email, password, username } = req.body;
