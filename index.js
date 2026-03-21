@@ -8,9 +8,14 @@ const PORT = process.env.PORT || 3002;
 
 app.use(express.json());
 
-// UPDATED: Added your specific Vercel patterns to the origin
+// UPDATED: Explicitly allowed your live Vercel URLs
 app.use(cors({ 
-    origin: ["http://localhost:3000", "http://localhost:3001", /\.vercel\.app$/], 
+    origin: [
+        "http://localhost:3000", 
+        "http://localhost:3001", 
+        "https://zerodha-frontend-xi.vercel.app", 
+        "https://zerodha-dashboard-eta.vercel.app"
+    ], 
     credentials: true 
 }));
 
@@ -20,7 +25,7 @@ mongoose.connect(MONGO_URL)
     .then(() => console.log("✅ Database Connected"))
     .catch((err) => console.log("❌ DB Error:", err));
 
-// --- MODELS --- (Kept exactly as provided)
+// --- MODELS ---
 const User = mongoose.model("User", new mongoose.Schema({
     username: String, email: { type: String, unique: true }, password: String, balance: { type: Number, default: 10000 }
 }));
@@ -39,7 +44,7 @@ const Order = mongoose.model("Order", new mongoose.Schema({
     createdAt: { type: Date, default: Date.now } 
 }));
 
-// --- ROUTES --- (All routes kept exactly as provided)
+// --- ROUTES ---
 app.post("/signup", async (req, res) => {
     try {
         const { email, password, username } = req.body;
